@@ -1,0 +1,7 @@
+export(whatif)
+
+S3method(plot, whatif)
+S3method(summary, whatif)
+S3method(print, whatif)
+S3method(print, summary.whatif)
+
