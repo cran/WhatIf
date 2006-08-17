@@ -1,19 +1,20 @@
-\name{f}
+\name{peacef}
 \docType{data}
-\alias{f}
+\alias{peacef}
 \title{Factual Replication Data from King and Zeng 2006b}
 \description{
      This data set is one of two that together allow the
      replication of the analysis in section 2.4 of King and Zeng 2006b.   
      It contains \emph{factual} data from Doyle and Sambanis 
      2000 on 124 post-WWII civil wars.  It should be used in conjunction
-     with the data set of counterfactuals derived from it, \code{cf}.
+     with the data set of counterfactuals derived from it, \code{peacecf}.
 }
-\usage{data(f)}
+\usage{data(peacef)}
 \format{A data frame with dimensions 124-by-11.  Columns are covariates and 
-    rows are data points (or units).  The covariates are 'decade', 'wartype', 'logcost', 
-    'wardur', 'factnum', 'factnumsq', 'trnsfcap', 'untype4', 'treaty', 'develop', 
-    and 'exp', in that order.  
+    rows are data points (or units).  The covariates are \code{decade}, 
+    \code{wartype}, \code{logcost}, \code{wardur}, \code{factnum}, \code{factnumsq}, 
+    \code{trnsfcap}, \code{untype4}, \code{treaty}, \code{develop}, and \code{exp}, 
+    in that order.  
 }
 \source{King and Zeng 2006b}
 \references{

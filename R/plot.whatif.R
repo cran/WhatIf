@@ -49,10 +49,10 @@ plot.whatif <- function(x, type = "f", numcf = NULL, eps = FALSE, ...)  {
       postscript(file=filename, onefile=FALSE, horizontal=FALSE)
     }
     plot(x.val, x$cum.freq[1,], xlab =
-      "Gower distance squared", ylab =
+      "Distance", ylab =
       "Cumulative % of data within distance", ylim = c(0, 1),
       xlim = c(min(x.val), max(x.val)), type = "n", main = 
-      "Cumulative Frequencies of Gower Distances to Counterfactual")
+      "Cumulative Frequencies of Distances to Counterfactual")
     if (is.null(numcf))  {
       for (i in 1:dim(x$cum.freq)[1])  {
         do.plot(x, type, x.val, i)

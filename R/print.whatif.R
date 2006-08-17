@@ -1,4 +1,4 @@
-print.whatif <- function(x, print.gowers = FALSE, print.freq = FALSE, ...)  {
+print.whatif <- function(x, print.dist = FALSE, print.freq = FALSE, ...)  {
 
    x$in.hull <- as.character(x$in.hull)
 
@@ -18,14 +18,14 @@ print.whatif <- function(x, print.gowers = FALSE, print.freq = FALSE, ...)  {
     cat("\n")
     cat("Geometric Variance of Covariates:  ", x$geom.var, sep = "\n")
     cat("\n")
-    if (print.gowers)  {
-      cat("Gower Distances of Counterfactual to Data Points:\n")
-      prmatrix(cbind(Counterfactual = seq(1, m, by = 1), x$gowers.dist), rowlab = 
+    if (print.dist)  {
+      cat("Distances of Counterfactual to Data Points:\n")
+      prmatrix(cbind(Counterfactual = seq(1, m, by = 1), x$dist), rowlab = 
         rep("", m))
       cat("\n")
     }
     if (print.freq)  {
-      cat("Cumulative Frequencies of Gower Distances:\n")
+      cat("Cumulative Frequencies of Distances:\n")
       prmatrix(cbind(Counterfactual = seq(1, m, by = 1), x$cum.freq), rowlab = 
         rep("", m))
       cat("\n")

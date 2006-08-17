@@ -25,10 +25,10 @@ elements:
   each counterfactual, where the average is taken over all
   counterfactuals.}
   \item{sum.df}{A data frame with three columns and \eqn{m} rows, where \eqn{m} is
-  the number of counterfactuals.  The first column, 'cfact', indexes
-  the counterfactuals.  The second column, 'in.hull', contains the
-  results of the convex hull test.  The third column, 'per.near',
-  contains the percentage of data points `nearby' each counterfactual.}
+  the number of counterfactuals.  The first column, \code{cfact}, indexes
+  the counterfactuals.  The second column, \code{in.hull}, contains the
+  results of the convex hull test.  The third column, \code{per.near},
+  contains the percentage of data points nearby each counterfactual.}
 This object is printed to the screen.
 }
 \references{King, Gary and Langche Zeng.  2006a.  "The Dangers of 

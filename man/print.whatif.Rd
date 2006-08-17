@@ -6,17 +6,17 @@ Prints the information produced by the function \code{whatif},
 an object of class "whatif", to the screen.  
 }
 \usage{
-\method{print}{whatif}(x, print.gowers = FALSE, print.freq = FALSE, ...)
+\method{print}{whatif}(x, print.dist = FALSE, print.freq = FALSE, ...)
 }
 \arguments{
   \item{x}{An object of class "whatif", the output of
     the function \code{whatif}.}
-  \item{print.gowers}{A Boolean; should the matrix of pairwise Gower
+  \item{print.dist}{A Boolean; should the matrix of pairwise 
     distances between each counterfactual and data point be printed to
-    the screen?  Default is FALSE.}
+    the screen?  Default is \code{FALSE}.}
   \item{print.freq}{A Boolean; should the matrix of cumulative
-    frequencies of Gower distances for each counterfactual be printed
-    to the screen?  Default is FALSE.}
+    frequencies of distances for each counterfactual be printed
+    to the screen?  Default is \code{FALSE}.}
   \item{...}{Further arguments passed to and from other methods.}
 }
 \value{
