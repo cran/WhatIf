@@ -1,4 +1,4 @@
-whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearby = NULL,  distance = "gower", miss = "list", choice= "both", return.inputs = FALSE, ...)  {
+whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearby = 1,  distance = "gower", miss = "list", choice= "both", return.inputs = FALSE, return.distance = FALSE, ...)  {
 
     #DATA PROCESSING AND RELATED USER INPUT ERROR CHECKING
     #Initial processing of cfact
@@ -86,7 +86,7 @@ whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearb
   }
   if (!(identical(complete.cases(cfact), rep(TRUE, dim(cfact)[1])))) {
     cfact <- na.omit(cfact)
-    warning("Counterfactuals with missing values eliminated from cfact")
+    print("Note:  counterfactuals with missing values eliminated from cfact")
   }
     #Tertiary processing of data and cfact:  convert to numeric matrices
   if (is.data.frame(data))  {
@@ -152,10 +152,52 @@ whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearb
     stop("'distance' must be either ''gower'' or ''euclidian''")
   }
 
+    #Check if choice argument is valid
+  if (!(identical(choice, "both") || identical(choice, "hull") || identical(choice, "distance")))  {
+    stop("'choice' must be either ''both'', ''hull'', or ''distance''")
+  }
+
+   #Check if return.distance argument is valid
+  if (!(is.logical(return.inputs)))  {
+    stop("'return.inputs' must be logical, i.e. either TRUE or FALSE")
+  }
+
+   #Check if return.distance argument is valid
+  if (!(is.logical(return.distance)))  {
+    stop("'return.distance' must be logical, i.e. either TRUE or FALSE")
+  }
+
     #KEY LOCAL VARIABLES
   n = nrow(data)  #Number of data points in observed data set (initially including missing)
 
     #LOCAL FUNCTIONS
+  convex.hull.test <- function(x, z)  {
+
+  #Create objects required by lp function, adding a row of 1s to
+  #transposed matrix s and a 1 to counterfactual vector z[m,].  Note that "A" here
+  #corresponds to "A'" in King and Zeng 2006, Appendix A, and "B" and
+  #"C" to their "B" and "C", respectively.
+
+    n <- nrow(x)
+    k <- ncol(x)
+    m <- nrow(z)
+    
+    A <- rbind(t(x), rep(1, n))
+    C <- c(rep(0, n))
+    D <- c(rep("=", k + 1))
+    
+    hull=rep(0,m)
+    
+    for (i in 1:m)  {
+      B <- c(z[i,],1)
+      lp.result <- lp(objective.in=C, const.mat=A, const.dir=D, const.rhs=B)
+      if (lp.result$status==0)
+        hull[i]<-1      
+    }
+    hull <- as.logical(hull)
+    return(hull)
+  }
+
   calc.gd <- function(dat, cf, range) {
       #If range =  0 for a variable k, set the normalized difference
       #equal to 0 if, for a given observed data point p, its
@@ -178,32 +220,6 @@ whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearb
     }
     return(t(dist))
    }
-  
-  convex.hull.test <- function(x, z)  {
-
-  #Create objects required by lp function, adding a row of 1s to
-  #transposed matrix dat and a 1 to vector cf[m,].  Note that "A" here
-  #corresponds to "A'" in King and Zeng 2006a, Appendix A, and "B" and
-  #"C" to their "B" and "C", respectively.
-
-    n <- nrow(x)
-    k <- ncol(x)
-    m <- nrow(z)
-    
-    A <- rbind(t(x), rep(1, n))
-    C <- c(rep(0, n))
-    D <- c(rep("=", k + 1))
-    
-    hull=rep(0,m)
-    
-    for (i in 1:m){
-      B <- c(z[i,],1)
-      lp.result <- lp(objective.in=C, const.mat=A, const.dir=D, const.rhs=B)
-      if (lp.result$status==0)
-        hull[i]<-1      
-    }
-    return(hull)
-  }
 
   calc.ed <- function(dat, cf)  {
     n<-nrow(dat)
@@ -212,12 +228,13 @@ whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearb
     dist=matrix(0,m,n,dimnames=list(1:m,1:n))
     for (i in 1:m) {
       temp<-(dat-cf[i,])^2
-      dist[i,]<-sqrt(colSums(temp,na.rm=T)) 
+      dist[i,]<-(colSums(temp)) 
     }
       return(t(dist))
     }
 
   geom.var <- function(dat,rang) {
+    n <- nrow(dat)
     dat<-t(dat)
     ff<-function(x){
       temp<-abs(dat-x)/rang
@@ -233,56 +250,6 @@ whatif <- function(formula = NULL, data, cfact, range = NULL, freq = NULL, nearb
     return (gv.x)
   }
  
-    #MISSING DATA
-  is.miss <- !identical(complete.cases(data), rep(TRUE, n))
-  if (is.miss && identical(miss, "list"))  {
-    data <- na.omit(data)
-    n <- nrow(data)
-  }
-
-    #CONVEX HULL TEST
-
-if ((choice=="both")|(choice=="hull")){
-  print("Performing convex hull test ...")
-  if (is.miss && identical(miss, "case"))  
-    data<-na.omit(data)
-  test.result <- convex.hull.test(x = data, z = cfact)
-}
-
-    #CALCULATE DISTANCE
-
-if ((choice=="both")|(choice=="distance")){
-  print("Calculating distances ....")
-  if (identical(distance, "gower"))  {
-    samp.range <- apply(data, 2, max, na.rm = TRUE) - apply(data, 2, min, na.rm = TRUE)
-    if(!is.null(range)) {            
-      w<-which(!is.na(range))
-      samp.range[w]<-range[w]
-    }
-    if (identical(TRUE, any(samp.range == 0)))  {
-      warning("Range of at least one variable equals zero")
-    }
-    dist <- calc.gd(dat = data, cf = cfact,range=samp.range)
-  }  else {
-    dist <- calc.ed(dat = data, cf = cfact)
-  }
-    
-    #GEOMETRIC VARIANCE
-  print("Calculating the geometric variance...")
-  if (identical(distance, "gower"))  {
-    gv.x <- geom.var(dat = data,rang = samp.range)
-  }  else {
-      #Calculate trace of var-cov matrix of 'data' for Euclidian distances
-    varcov.x <- var(data, na.rm = TRUE)
-    gv.x <- sum(diag(varcov.x))
-  }
-	
-    #SUMMARY STATISTIC
-  if (is.null(nearby))  {
-    nearby <- gv.x
-  }
-    summary <- colSums(dist <= nearby) * (1/n)
-  
   calc.cumfreq <- function(freq, dist)  {
     m<-length(freq)
     n<-ncol(dist)
@@ -291,17 +258,63 @@ if ((choice=="both")|(choice=="distance")){
       res[,i]<-(colSums(dist <= freq[i]))/nrow(dist)
     return(res)
   }
-    
-    #CUMULATIVE FREQUENCIES
- print("Calculating cumulative frequencies ...")
-  if (is.null(freq))  {
-    if (identical(distance, "gower"))  {
-      freqdist <- seq(0, 1, by = 0.05)
-    }  else {
-      min.ed <- min(dist)
-      max.ed <- max(dist)
-      freqdist <- round(seq(min.ed, max.ed, by = (max.ed - min.ed)/20), 2)
+
+    #MISSING DATA
+if (identical(miss, "list"))  {
+  data <- na.omit(data)
+  n <- nrow(data)
+}
+
+    #CONVEX HULL TEST
+
+if ((choice=="both")|(choice=="hull"))  {
+  print("Performing convex hull test ...")
+  test.result <- convex.hull.test(x = na.omit(data), z = cfact)
+}
+  
+    #CALCULATE DISTANCE
+
+if ((choice=="both")|(choice=="distance"))  {
+  print("Calculating distances ....")
+  if (identical(distance, "gower"))  {
+    samp.range <- apply(data, 2, max, na.rm = TRUE) - apply(data, 2, min, na.rm = TRUE)
+    if(!is.null(range)) {            
+      w<-which(!is.na(range))
+      samp.range[w]<-range[w]
     }
+    if (identical(TRUE, any(samp.range == 0)))  {
+      print("Note:  range of at least one variable equals zero")
+    }
+    dist <- calc.gd(dat = data, cf = cfact, range=samp.range)
+  }  else {
+    dist <- calc.ed(dat = na.omit(data), cf = cfact)
+  }
+
+     #GEOMETRIC VARIANCE
+  print("Calculating the geometric variance...")
+  if (identical(distance, "gower"))  {
+    gv.x <- geom.var(dat = data,rang = samp.range)
+  }  else {
+    gv.x<-.5*mean(calc.ed(dat = na.omit(data), cf = na.omit(data)))
+  }
+	
+    #SUMMARY STATISTIC
+  if (identical(miss, "case") && identical(distance, "euclidian"))  {
+    summary <- colSums(dist <= nearby*gv.x) * (1/nrow(na.omit(data)))
+  }  else  {
+    summary <- colSums(dist <= nearby*gv.x) * (1/n)
+  }
+  
+    #CUMULATIVE FREQUENCIES
+  print("Calculating cumulative frequencies ...")
+   if (is.null(freq))  {
+     if (identical(distance, "gower"))  {
+       freqdist <- seq(0, 1, by = 0.05)
+     }  else {
+       min.ed <- min(dist)
+       max.ed <- max(dist)
+       freqdist <- round(seq(min.ed, max.ed, by = (max.ed - min.ed)/20), 2)
+     }
   } else {
     freqdist <- freq
   }
@@ -314,25 +327,47 @@ print("Finishing up ...")
   #RETURN
   
 if (return.inputs)  {
-  if (choice=="both"){
-    out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), in.hull = test.result, dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)}
+  if (choice=="both")  {
+    if (return.distance)  {
+      out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), in.hull = test.result, dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }  else  {
+      out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), in.hull = test.result, geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }
+  }
 
-  if (choice=="hull"){
-      out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), in.hull = test.result,)}
-    
-  if (choice=="distance"){
+  if (choice=="distance")  {
+    if (return.distance)  {
       out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }  else {
+      out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }
   }
+
+  if (choice=="hull") {
+      out <- list(call = match.call(), inputs = list(data = data, cfact = cfact), in.hull = test.result,)
+  }
+    
 }  else  {
-  if (choice=="both"){
-      out <- list(call = match.call(), in.hull = test.result, dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)}
-    
-  if (choice=="hull"){
-      out <- list(call = match.call(), in.hull = test.result,)}
-    
-  if (choice=="distance"){
-      out <- list(call = match.call(), dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+  if (choice=="both")  {
+    if (return.distance)  {
+      out <- list(call = match.call(), in.hull = test.result, dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }  else {
+      out <- list(call = match.call(), in.hull = test.result, geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }
   }
+    
+  if (choice=="distance")  {
+    if (return.distance)  {
+      out <- list(call = match.call(), dist = t(dist), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }  else {
+      out <- list(call = match.call(), geom.var = gv.x, sum.stat = summary, cum.freq = cumfreq)
+    }
+  }
+
+  if (choice=="hull")  {
+      out <- list(call = match.call(), in.hull = test.result,)
+  }
+
 }
 
   class(out) <- "whatif"

@@ -6,8 +6,9 @@
   evaluating counterfactuals.  
 }
 \usage{
-whatif(formula = NULL, data, cfact, range = NULL, freq = NULL, nearby = NULL, 
-distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, ...)
+whatif(formula = NULL, data, cfact, range = NULL, freq = NULL, nearby = 1, 
+distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, 
+return.distance = FALSE, ...)
 }
 \arguments{
   \item{formula}{An optional formula without a dependent variable that
@@ -102,30 +103,30 @@ distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, ...)
     is employed, frequencies are calculated for the sequence of Euclidian
     distances from the minimum to the maximum observed distances in twenty
     equal increments, all rounded to two decimal places.  Default is \code{NULL}.}
-  \item{nearby}{An optional scalar; the cutoff distance value
-    indicating which observed data points are considered to be nearby
-    the counterfactuals.  Used to calculate the summary statistic
+  \item{nearby}{An optional scalar indicating
+    which observed data points are considered to be nearby (i.e., withing `nearby'
+    geometric variances of) the counterfactuals.  Used to calculate the summary statistic
     returned by the function: the fraction of the observed data nearby
     each counterfactual.  By default, the geometric variance of the
     covariate data is used.  For example, setting \code{nearby} to
-    0.11 will identify the proportion of data points within 0.11 of a
+    2 will identify the proportion of data points within two geometric variances of a
     counterfactual.  Default is \code{NULL}.}
   \item{distance}{An optional string indicating which of two distance measures
     to employ.  The choices are either \code{"gower"}, Gower's non-parametric
     distance measure (\eqn{G^2}), which is suitable for both qualitative
-    and quantitative data; or \code{"euclidian"}, Euclidian distance, which is only suitable
-    for quantitative data.  The default is \code{"gower"}.}
+    and quantitative data; or \code{"euclidian"}, squared Euclidian distance, which 
+    is only suitable for quantitative data.  The default is \code{"gower"}.}
   \item{miss}{An optional string indicating the strategy for dealing
     with missing data in the observed covariate data set.
     \code{whatif} supports two possible missing data strategies:
     \code{"list"}, list-wise deletion of missing cases; and \code{"case"},
     ignoring missing data case-by-case.  Note that if \code{"case"} is
     selected, cases with missing values are deleted listwise for the
-    convex hull test but simply ignored in computing the 
-    distances.  However, when the Euclidian distance measure is used, 
-    the geometric variance is calculated from a variance-covariance matrix 
-    that is solely a product of the fully observed cases.  Default is
-    \code{"list"}.}
+    convex hull test and for computing Euclidian distances, but pairwise deletion is
+    used in computing the Gower distances to maximally use available
+    information. The user is strongly encouraged to treat missing data
+    using specialized tools such as Amelia prior to feeding the data to
+    \code{whatif}.  Default is \code{"list"}.}
   \item{choice}{An optional string indicating which analyses to 
     undertake. The options are either \code{"hull"}, only perform the convex hull 
     membership test; \code{"distance"}, do not perform the convex
@@ -141,6 +142,11 @@ distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, ...)
     missing values, and the coercion of data frames to numeric matrices.
     Primarily intended for diagnostic purposes.  If \code{TRUE}, these matrices
     are returned as a list.  Default is \code{FALSE}.}
+  \item{return.distance}{A Boolean; should the matrix of distances
+  between each counterfactual and data point be returned?  If
+  \code{TRUE}, this matrix is returned as part of the output; if
+  \code{FALSE}, it is not.  Default is \code{FALSE} due to the large
+  size that this matrix may attain.}
   \item{...}{Further arguments passed to and from other methods.}
 }
 \details{
@@ -177,7 +183,8 @@ distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, ...)
     counterfactual is in the convex hull and \code{FALSE} otherwise.}
   \item{dist}{A \eqn{m}-by-\eqn{n} numeric matrix, where \eqn{m} is 
     the number of counterfactuals and \eqn{n} is the number of data points 
-    (units).  The \eqn{[i, j]}th entry of the matrix contains the  
+    (units).  Only present if \code{return.distance} was set equal to \code{TRUE}
+  in the call to \code{whatif}.  The \eqn{[i, j]}th entry of the matrix contains the  
     distance between the \eqn{i}th counterfactual and the \eqn{j}th data point.}
   \item{geom.var}{A scalar.  The geometric variability of the observed covariate
     data.}
@@ -201,13 +208,13 @@ distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, ...)
     value represented by the \eqn{j}th column.  The column names contain these
     values.}
 }
-\references{King, Gary and Langche Zeng.  2006a.  "The Dangers of 
-  Extreme Counterfactuals."  \emph{Political Analysis,} forthcoming.
-  Preprint available from \url{http://gking.harvard.edu}.
+\references{King, Gary and Langche Zeng.  2006.  "The Dangers of 
+  Extreme Counterfactuals."  \emph{Political Analysis} 14 (2).
+  Available from \url{http://gking.harvard.edu}.
 
-  King, Gary and Langche Zeng.  2006b.  "When Can History Be Our Guide?
-  The Pitfalls of Counterfactual Inference."  \emph{International Studies Quarterly,}
-  forthcoming.  Preprint available from \url{http://gking.harvard.edu}.}
+  King, Gary and Langche Zeng.  2007.  "When Can History Be Our Guide?
+  The Pitfalls of Counterfactual Inference."  \emph{International Studies Quarterly}
+  51 (March).  Available from \url{http://gking.harvard.edu}.}
 \author{Stoll, Heather \email{hstoll@polsci.ucsb.edu}, King, Gary
   \email{king@harvard.edu} and Zeng, Langche \email{zeng@ucsd.edu}}
 \note{This function requires the \pkg{lpSolve} package.}

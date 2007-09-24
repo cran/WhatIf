@@ -12,17 +12,11 @@ my.result <- whatif(data = peacef, cfact = peacecf)
 #Look at results of convex hull test
 my.result$in.hull
 
-#Look at Gower's distance between first counterfactual and each of the 122 data points
-my.result$dist[1, ]
-
 #Look at geometric variance of covariates
 my.result$geom.var
 
 #Look at proportion of data points nearby all 122 counterfactuals
 my.result$sum.stat
-
-#Run whatif supplying own value for parameter 'nearby'
-my.result <- whatif(data = peacef, cfact = peacecf, nearby = 0.110)
 
 #Calculate mean proportion of data points nearby all 122 counterfactuals
 mean(my.result$sum.stat)

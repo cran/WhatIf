@@ -4,7 +4,8 @@
 \description{
   Generates a cumulative frequency plot of distances from an
   object of class "whatif".  The cumulative frequencies (the fraction
-  of rows in the observed data set with either Gower or Euclidian distances to 
+  of rows in the observed data set with either Gower or (squared)
+  Euclidian distances to
   the counterfactuals  less than the given value on the horizontal axis) 
   appear on the vertical axis.  
 }
@@ -46,13 +47,13 @@
   '\code{graph_'type'_'numcf'.eps}', where \code{'type'} and \code{'numcf'}
   are the values of the respective arguments.  
 }
-\references{King, Gary and Langche Zeng.  2006a.  "The Dangers of
-  Extreme Counterfactuals."  \emph{Political Analysis,} forthcoming.
-  Preprint available from \url{http://GKing.Harvard.Edu}.
+\references{King, Gary and Langche Zeng.  2006.  "The Dangers of
+  Extreme Counterfactuals."  \emph{Political Analysis} 14 (2).
+  Available from \url{http://GKing.Harvard.Edu}.
 
-  King, Gary and Langche Zeng.  2006b.  "When Can History Be Our Guide?
-  The Pitfalls of Counterfactual Inference."  \emph{International Studies Quarterly,}
-  forthcoming.  Preprint available from \url{http://gking.harvard.edu}.}
+  King, Gary and Langche Zeng.  2007.  "When Can History Be Our Guide?
+  The Pitfalls of Counterfactual Inference."  \emph{International Studies Quarterly}
+  51 (March).  Available from \url{http://gking.harvard.edu}.}
 \author{Stoll, Heather \email{hstoll@polsci.ucsb.edu}, King, Gary
   \email{king@harvard.edu} and Zeng, Langche \email{zeng@ucsd.edu}}
 \seealso{

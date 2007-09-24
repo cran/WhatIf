@@ -18,9 +18,9 @@
 }
 \source{King and Zeng 2006b}
 \references{
-     King, Gary and Langche Zeng.  2006b.  "When Can History Be Our Guide?  The
-     Pitfalls of Counterfactual Inference."  \emph{International Studies Quarterly},
-     forthcoming.
+     King, Gary and Langche Zeng.  2006.  "When Can History Be Our Guide?  The
+     Pitfalls of Counterfactual Inference."  \emph{International Studies Quarterly}
+     51 (March).
 
      Doyle, Michael W. and Nicholas Sambanis.  2000.  "International Peacebuilding:
      A Theoretical and Quantitative Analysis."  \emph{American Political Science 

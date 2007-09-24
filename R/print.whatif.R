@@ -19,10 +19,14 @@ print.whatif <- function(x, print.dist = FALSE, print.freq = FALSE, ...)  {
     cat("Geometric Variance of Covariates:  ", x$geom.var, sep = "\n")
     cat("\n")
     if (print.dist)  {
-      cat("Distances of Counterfactual to Data Points:\n")
-      prmatrix(cbind(Counterfactual = seq(1, m, by = 1), x$dist), rowlab = 
-        rep("", m))
-      cat("\n")
+      if (is.null(x$dist))  {
+        print("No distance matrix returned to print")
+      }  else  {
+        cat("Distances of Counterfactual to Data Points:\n")
+        prmatrix(cbind(Counterfactual = seq(1, m, by = 1), x$dist), rowlab = 
+          rep("", m))
+        cat("\n")
+      }
     }
     if (print.freq)  {
       cat("Cumulative Frequencies of Distances:\n")
