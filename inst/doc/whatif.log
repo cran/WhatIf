@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159-1.10b (Web2C 7.4.5) (format=pdflatex 2007.8.1)  24 SEP 2007 19:55
+This is pdfTeX, Version 3.14159-1.10b (Web2C 7.4.5) (format=pdflatex 2007.11.9)  3 MAR 2009 20:49
 **whatif
 (./whatif.tex{/usr/share/texmf/pdftex/config/pdftex.cfg}
 LaTeX2e <2001/06/01>
@@ -49,11 +49,11 @@ File: pdftex.def 2002/06/19 v0.03k graphics/color for pdftex
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(/nfs/fs1/home/K/king/texinputs/natbib.sty
-Package: natbib 1999/02/25 6.9 (PWD)
+(/usr/share/texmf/tex/latex/natbib/natbib.sty
+Package: natbib 2000/07/24 7.0a (PWD)
 \bibhang=\skip43
 \bibsep=\skip44
-LaTeX Info: Redefining \cite on input line 486.
+LaTeX Info: Redefining \cite on input line 508.
 \c@NAT@ctr=\count88
 )
 (/usr/share/texmf/tex/latex/amsmath/amsmath.sty
@@ -372,23 +372,23 @@ Overfull \hbox (3.06471pt too wide) in paragraph at lines 669--669
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <14.4> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 743.
  [11] [12] [13] [14] [15] (./whatif.bbl
-Underfull \hbox (badness 2856) in paragraph at lines 30--34
+Underfull \hbox (badness 2856) in paragraph at lines 31--35
 []/cmr10/King, Gary and Langche Zeng. 2007.  ``When Can His-tory Be Our Guide? 
 The
  []
 
 
-Underfull \hbox (badness 3108) in paragraph at lines 30--34
+Underfull \hbox (badness 3108) in paragraph at lines 31--35
 /cmr10/Pit-falls of Coun-ter-fac-tual In-fer-ence.'' /cmti10/In-ter-na-tional S
 tud-ies Quar-terly /cmr10/(March):183--210.
  []
 
 ) [16] (./whatif.aux) ) 
 Here is how much of TeX's memory you used:
- 4301 strings out of 95437
- 54076 string characters out of 1190234
- 112814 words of memory out of 1000001
- 7155 multiletter control sequences out of 10000+50000
+ 4320 strings out of 95437
+ 54243 string characters out of 1190233
+ 113109 words of memory out of 1000001
+ 7174 multiletter control sequences out of 10000+50000
  16624 words of font info for 65 fonts, out of 500000 for 1000
  14 hyphenation exceptions out of 1000
  34i,11n,36p,218b,333s stack positions out of 1500i,500n,5000p,200000b,5000s
@@ -411,4 +411,4 @@ texmf/fonts/type1/bluesky/cm/cmtt9.pfb></usr/share/texmf/fonts/type1/bluesky/cm
 onts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr12.p
 fb></usr/share/texmf/fonts/type1/bluesky/cm/cmr17.pfb>{/usr/share/texmf/dvips/t
 etex/0ef0afca.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cmcsc10.pfb>
-Output written on whatif.pdf (17 pages, 215767 bytes).
+Output written on whatif.pdf (17 pages, 216415 bytes).

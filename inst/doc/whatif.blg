@@ -5,42 +5,42 @@ Database file #1: gk.bib.bib
 Database file #2: gkpubs.bib.bib
 You've used 5 entries,
             2908 wiz_defined-function locations,
-            768 strings with 7231 characters,
-and the built_in function-call counts, 20645 in all, are:
-= -- 3298
+            772 strings with 7300 characters,
+and the built_in function-call counts, 20713 in all, are:
+= -- 3307
 > -- 363
 < -- 0
 + -- 1573
 - -- 124
-* -- 1771
-:= -- 4197
+* -- 1784
+:= -- 4204
 add.period$ -- 25
 call.type$ -- 5
 change.case$ -- 65
 chr.to.int$ -- 5
 cite$ -- 5
-duplicate$ -- 73
-empty$ -- 164
+duplicate$ -- 74
+empty$ -- 171
 format.name$ -- 127
-if$ -- 3701
+if$ -- 3715
 int.to.chr$ -- 5
 int.to.str$ -- 0
 missing$ -- 5
 newline$ -- 28
 num.names$ -- 63
-pop$ -- 14
+pop$ -- 11
 preamble$ -- 1
 purify$ -- 75
 quote$ -- 0
 skip$ -- 67
 stack$ -- 0
-substring$ -- 4592
-swap$ -- 8
+substring$ -- 4608
+swap$ -- 9
 text.length$ -- 70
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 20
 warning$ -- 0
-while$ -- 120
+while$ -- 122
 width$ -- 0
-write$ -- 81
+write$ -- 82
