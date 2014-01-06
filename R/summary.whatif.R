@@ -10,8 +10,7 @@ summary.whatif <- function (object, ...)  {
  sum.df <- data.frame(cfact = seq(1, m, by = 1), in.hull = object$in.hull, 
    per.near = object$sum.stat)
 
- out <- list(call = object$call, m = m, m.inhull = m.inhull, mean.near = 
-   mean.near, sum.df = sum.df)
+out <- list(call = object$call, m = m, m.inhull = m.inhull, mean.near = mean.near, sum.df = sum.df)
  class(out) <- "summary.whatif"
  return(out)
 
