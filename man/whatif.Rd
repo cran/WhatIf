@@ -8,7 +8,7 @@
 \usage{
 whatif(formula = NULL, data, cfact, range = NULL, freq = NULL, nearby = 1, 
 distance = "gower", miss = "list", choice = "both", return.inputs = FALSE, 
-return.distance = FALSE, mc.cores = detectCores(), ...)
+return.distance = FALSE, mc.cores = 1, ...)
 }
 \arguments{
   \item{formula}{An optional formula without a dependent variable that
@@ -150,8 +150,7 @@ return.distance = FALSE, mc.cores = detectCores(), ...)
   size that this matrix may attain.}
   \item{mc.cores}{The number of cores to use for the convex hull test, i.e. at 
   most how many child processes will be run simultaneously. Must be at least 
-  one, and parallelization requires at least two cores. The default is set by
-  \code{\link{detectCores}}}.
+  one, and parallelization requires at least two cores. Default is \code{1}.}
   \item{...}{Further arguments passed to and from other methods.}
 }
 \details{

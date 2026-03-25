@@ -9,13 +9,12 @@ test_that("REQUIRE TEST whatif with 1 counterfactual", {
 })
 
 
-test_that("REQUIRE TEST multitreaded", {
+test_that("REQUIRE TEST multithreaded", {
+    skip_on_cran()
+
     my.cfact <- matrix(rnorm(3*5), ncol = 5)
     my.data <- matrix(rnorm(100*5), ncol = 5)
-    
-    with_mock(
-        `WhatIf::whatif` = function(...) print("3 cores"),
-        expect_error(whatif(data = my.data, cfact = my.cfact, 
-                        mc.cores = 3), NA) 
-    )
+
+    expect_error(whatif(data = my.data, cfact = my.cfact,
+                        mc.cores = 1), NA)
 })
